@@ -1,0 +1,93 @@
+FROM alpine:3.14
+LABEL maintainer "DI GREGORIO Nicolas <nicolas.digregorio@gmail.com>"
+
+ARG DELUGE_VERSION='2.0.3' \
+    LIBTORRENT_VERSION='2.0.4'
+  
+
+### Environment variables
+ENV LANG='en_US.UTF-8' \
+    LANGUAGE='en_US.UTF-8' \
+    TERM='xterm'  \
+    APPUSER='deluge' \
+    APPUID='10034' \
+    APPGID='10034' \
+    DELUGE_VERSION="${DELUGE_VERSION}" \
+    LIBTORRENT_VERSION="${LIBTORRENT_VERSION}"
+
+# Copy config files
+COPY root/ /
+
+### Install Application
+RUN set -x && \
+    chmod 1777 /tmp && \
+    . /usr/local/bin/docker-entrypoint-functions.sh && \
+    MYUSER=${APPUSER} && \
+    MYUID=${APPUID} && \
+    MYGID=${APPGID} && \
+    ConfigureUser && \
+    apk add --no-cache --virtual=build-deps \
+      boost-build \
+      boost-dev \
+      cargo \
+      curl \
+      gcc \
+      g++ \
+      libffi-dev \
+      libjpeg-turbo-dev \
+      musl-dev \
+      py3-pip \
+      python3-dev \
+      openssl-dev \
+      rust \
+      zlib-dev \ 
+    && \
+    apk add --no-cache --virtual=run-deps \
+      bash \
+      boost \
+      ca-certificates \
+      libffi \
+      libjpeg-turbo \
+      python3 \
+      py3-setuptools \
+      su-exec \
+      tzdata \
+      zlib \
+    && \
+    curl -sL https://github.com/arvidn/libtorrent/releases/download/v${LIBTORRENT_VERSION}/libtorrent-rasterbar-${LIBTORRENT_VERSION}.tar.gz -o /tmp/libtorrent.tar.gz && \
+    tar xzf /tmp/libtorrent.tar.gz -C /tmp && \
+    cd /tmp/libtorrent-rasterbar-* && \
+    python3 setup.py build && \
+    python3 setup.py install && \
+    pip --no-cache-dir install --upgrade \
+      pip \ 
+      setuptools \
+      wheel \ 
+    && \
+    pip --no-cache-dir install --upgrade \
+      deluge==${DELUGE_VERSION} \
+    && \
+    cd /tmp && \
+    apk del --no-cache --purge \
+      build-deps  \
+    && \
+    mkdir -p /docker-entrypoint.d && \
+    mkdir -p /config && \
+    chmod +x /usr/local/bin/docker-entrypoint.sh && \
+    ln -snf /usr/local/bin/docker-entrypoint.sh /docker-entrypoint.sh && \
+    rm -rf /tmp/* \
+           /var/cache/apk/*  \
+           /var/tmp/* 
+
+### Volume
+VOLUME ["/config", "/downloads"]
+
+### Expose ports
+EXPOSE 8112 58846 58946 58946/udp
+
+### Running User: not used, managed by docker-entrypoint.sh
+#USER deluge
+
+### Start DELUGE
+ENTRYPOINT ["/docker-entrypoint.sh"]
+CMD ["deluge"]
