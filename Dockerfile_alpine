@@ -33,6 +33,7 @@ RUN set -x && \
       curl \
       gcc \
       g++ \
+      gettext-dev \
       libffi-dev \
       libjpeg-turbo-dev \
       musl-dev \
@@ -46,6 +47,7 @@ RUN set -x && \
       bash \
       boost \
       ca-certificates \
+      gettext \
       libffi \
       libjpeg-turbo \
       python3 \
