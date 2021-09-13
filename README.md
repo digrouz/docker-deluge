@@ -29,8 +29,8 @@ https://deluge-torrent.org/
       -e DOCKUPGRADE=<0|1> \
       -p 8112:8112 \
       -p 58846:58846 \
-      -p 58946:58946 \
-      -p 58946:58946/udp digrouz/deluge:latest
+      -p 58946:58946/udp \
+    digrouz/deluge:latest
 
 ## Environment Variables
 
