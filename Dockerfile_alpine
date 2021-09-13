@@ -47,7 +47,7 @@ RUN set -x && \
       bash \
       boost \
       ca-certificates \
-      gettext \
+      gettext-libs \
       libffi \
       libjpeg-turbo \
       python3 \
