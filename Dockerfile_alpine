@@ -50,6 +50,7 @@ RUN set -x && \
       gettext-libs \
       libffi \
       libjpeg-turbo \
+      musl-locales \
       python3 \
       py3-setuptools \
       su-exec \
@@ -64,9 +65,10 @@ RUN set -x && \
     pip --no-cache-dir install --upgrade \
       pip \ 
       setuptools \
-      wheel \ 
+      wheel \
     && \
     pip --no-cache-dir install --upgrade \
+      idna \
       deluge==${DELUGE_VERSION} \
     && \
     cd /tmp && \
