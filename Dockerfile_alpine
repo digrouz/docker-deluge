@@ -58,17 +58,16 @@ RUN set -x && \
       tzdata \
       zlib \
     && \
-    ln -s /usr/bin/pip3 /usr/local/bin/pip && \
-    pip --no-cache-dir install --upgrade \
-      pip \ 
-      setuptools \
-      wheel \
-    && \
     curl -sL https://github.com/arvidn/libtorrent/releases/download/v${LIBTORRENT_VERSION}/libtorrent-rasterbar-${LIBTORRENT_VERSION}.tar.gz -o /tmp/libtorrent.tar.gz && \
     tar xzf /tmp/libtorrent.tar.gz -C /tmp && \
     cd /tmp/libtorrent-rasterbar-* && \
     python3 setup.py build && \
     python3 setup.py install && \
+    pip --no-cache-dir install --upgrade \
+      pip \ 
+      setuptools \
+      wheel \
+    && \
     pip --no-cache-dir install --upgrade \
       idna \
       deluge==${DELUGE_VERSION} \
