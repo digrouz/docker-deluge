@@ -50,7 +50,6 @@ RUN set -x && \
       gettext-libs \
       libffi \
       libjpeg-turbo \
-      musl-locales \
       python3 \
       py3-setuptools \
       py3-pip \
