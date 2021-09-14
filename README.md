@@ -51,6 +51,7 @@ This variable is not mandatory and specifies if the container has to launch soft
 ## Notes
 
 * The docker entrypoint can upgrade operating system at each startup. To enable this feature, just add `-e DOCKUPGRADE=1` at container creation.
+* `latest` and `alpine` tags should be considered as non-working currently as official release `2.0.3` does not include python 3.9 support from alpine > 3.10.
 
 
 ## Issues
