@@ -2,7 +2,7 @@ FROM alpine:3.14
 LABEL maintainer "DI GREGORIO Nicolas <nicolas.digregorio@gmail.com>"
 
 ARG DELUGE_VERSION='2.1.1' \
-    LIBTORRENT_VERSION='2.0.4'
+    LIBTORRENT_VERSION='2.0.9'
   
 
 ### Environment variables
